@@ -17,6 +17,7 @@ type GameBoard struct {
 // Board is a 2D array to hold two lines of 6 characters
 type Board [2][6]string
 
+// SolutionBoard is the target board, the solution to the Panama Canal puzzle
 var SolutionBoard = Board{
 	{"P", "A", "N", "A", "M", "A"},
 	{"C", "A", "N", "A", "L", ""},
