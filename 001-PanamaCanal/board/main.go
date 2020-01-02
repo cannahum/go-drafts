@@ -9,7 +9,7 @@ import (
 // GameBoard is a struct that holds a single game board.
 // It is linked to how it was derived and another board that derives from it.
 type GameBoard struct {
-	board             Board
+	Board             Board
 	prev              *GameBoard
 	tileMoveDirection string
 }
@@ -27,7 +27,7 @@ func (b *GameBoard) String() string {
 	bb := *b
 
 	s := ""
-	for i, line := range bb.board {
+	for i, line := range bb.Board {
 		for j, char := range line {
 			if j == 0 {
 				s += "\t"
@@ -64,16 +64,16 @@ func Variate(b *GameBoard) []*GameBoard {
 	if li == 1 {
 		// Create Scenario: moving tile down (if possible)
 		newBoard := currentBoard
-		newBoard.board[li][ci] = newBoard.board[li-1][ci]
-		newBoard.board[li-1][ci] = ""
+		newBoard.Board[li][ci] = newBoard.Board[li-1][ci]
+		newBoard.Board[li-1][ci] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "down"
 		result = append(result, &newBoard)
 	} else {
 		// Create Scenario: moving tile up
 		newBoard := currentBoard
-		newBoard.board[li][ci] = newBoard.board[li+1][ci]
-		newBoard.board[li+1][ci] = ""
+		newBoard.Board[li][ci] = newBoard.Board[li+1][ci]
+		newBoard.Board[li+1][ci] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "up"
 		result = append(result, &newBoard)
@@ -82,8 +82,8 @@ func Variate(b *GameBoard) []*GameBoard {
 	// Create Scenario: moving tile left (if possible)
 	if ci != 5 {
 		newBoard := currentBoard
-		newBoard.board[li][ci] = newBoard.board[li][ci+1]
-		newBoard.board[li][ci+1] = ""
+		newBoard.Board[li][ci] = newBoard.Board[li][ci+1]
+		newBoard.Board[li][ci+1] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "left"
 		result = append(result, &newBoard)
@@ -92,8 +92,8 @@ func Variate(b *GameBoard) []*GameBoard {
 	// Create Scenario: moving tile right (if possible)
 	if ci != 0 {
 		newBoard := currentBoard
-		newBoard.board[li][ci] = newBoard.board[li][ci-1]
-		newBoard.board[li][ci-1] = ""
+		newBoard.Board[li][ci] = newBoard.Board[li][ci-1]
+		newBoard.Board[li][ci-1] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "right"
 		result = append(result, &newBoard)
@@ -103,7 +103,7 @@ func Variate(b *GameBoard) []*GameBoard {
 }
 
 func getEmptyTileCoordinates(b *GameBoard) (int, int, error) {
-	board := b.board
+	board := b.Board
 	for i, line := range board {
 		for j, char := range line {
 			if char == "" {
@@ -117,5 +117,5 @@ func getEmptyTileCoordinates(b *GameBoard) (int, int, error) {
 
 // IsSolutionBoard checks if the board is the target Board
 func IsSolutionBoard(b *GameBoard) bool {
-	return b.board == SolutionBoard
+	return b.Board == SolutionBoard
 }

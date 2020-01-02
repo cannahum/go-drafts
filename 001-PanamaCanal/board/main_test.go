@@ -7,7 +7,7 @@ import (
 
 func TestString(t *testing.T) {
 	b := GameBoard{
-		board: Board{
+		Board: Board{
 			{"P", "A", "N", "A", "M", "A"},
 			{"C", "A", "N", "A", "L", ""},
 		},
@@ -23,7 +23,7 @@ func TestString(t *testing.T) {
 
 func BenchmarkString(t *testing.B) {
 	g := GameBoard{
-		board: Board{
+		Board: Board{
 			{"P", "A", "N", "A", "M", "A"},
 			{"C", "A", "N", "A", "L", ""},
 		},
@@ -43,7 +43,7 @@ func TestGetEmptyTileCoordinates_NoError(t *testing.T) {
 	cases := []getEmptyTileCoordinatesTestCase{
 		{
 			gameBoard: GameBoard{
-				board: Board{
+				Board: Board{
 					{"P", "A", "N", "A", "M", "A"},
 					{"C", "A", "N", "A", "L", ""},
 				},
@@ -52,7 +52,7 @@ func TestGetEmptyTileCoordinates_NoError(t *testing.T) {
 		},
 		{
 			gameBoard: GameBoard{
-				board: Board{
+				Board: Board{
 					{"P", "A", "N", "A", "M", ""},
 					{"C", "A", "N", "A", "L", "A"},
 				},
@@ -61,7 +61,7 @@ func TestGetEmptyTileCoordinates_NoError(t *testing.T) {
 		},
 		{
 			gameBoard: GameBoard{
-				board: Board{
+				Board: Board{
 					{"", "P", "A", "N", "A", "M"},
 					{"C", "A", "N", "A", "L", "A"},
 				},
@@ -70,7 +70,7 @@ func TestGetEmptyTileCoordinates_NoError(t *testing.T) {
 		},
 		{
 			gameBoard: GameBoard{
-				board: Board{
+				Board: Board{
 					{"C", "P", "A", "N", "A", "M"},
 					{"", "A", "N", "A", "L", "A"},
 				},
@@ -79,7 +79,7 @@ func TestGetEmptyTileCoordinates_NoError(t *testing.T) {
 		},
 		{
 			gameBoard: GameBoard{
-				board: Board{
+				Board: Board{
 					{"C", "P", "A", "N", "A", "M"},
 					{"A", "", "N", "A", "L", "A"},
 				},
@@ -106,7 +106,7 @@ func TestGetEmptyTileCoordinates_NoError(t *testing.T) {
 
 func TestGetEmptyTileCoordinates_WithError(t *testing.T) {
 	badBoard := GameBoard{
-		board: Board{
+		Board: Board{
 			{"X", "P", "A", "N", "A", "M"},
 			{"C", "A", "N", "A", "L", "A"},
 		},
@@ -125,7 +125,7 @@ func TestGetEmptyTileCoordinates_WithError(t *testing.T) {
 
 func BenchmarkGetEmptyTileCoordinates(t *testing.B) {
 	g := GameBoard{
-		board: Board{
+		Board: Board{
 			{"P", "A", "N", "A", "M", "A"},
 			{"C", "A", "N", "A", "L", ""},
 		},
@@ -138,7 +138,7 @@ func BenchmarkGetEmptyTileCoordinates(t *testing.B) {
 
 func TestIsSolutionBoard(t *testing.T) {
 	truthy := GameBoard{
-		board: Board{
+		Board: Board{
 			{"P", "A", "N", "A", "M", "A"},
 			{"C", "A", "N", "A", "L", ""},
 		},
@@ -150,7 +150,7 @@ func TestIsSolutionBoard(t *testing.T) {
 	}
 
 	falsy := GameBoard{
-		board: Board{
+		Board: Board{
 			{"C", "A", "N", "A", "M", "A"},
 			{"P", "A", "N", "A", "L", ""},
 		},
@@ -163,7 +163,7 @@ func TestIsSolutionBoard(t *testing.T) {
 
 func BenchmarkIsSolutionBoard_Truthy(t *testing.B) {
 	truthy := GameBoard{
-		board: Board{
+		Board: Board{
 			{"P", "A", "N", "A", "M", "A"},
 			{"C", "A", "N", "A", "L", ""},
 		},
@@ -176,7 +176,7 @@ func BenchmarkIsSolutionBoard_Truthy(t *testing.B) {
 
 func BenchmarkIsSolutionBoard_Falsy(t *testing.B) {
 	falsy := GameBoard{
-		board: Board{
+		Board: Board{
 			{"C", "A", "N", "A", "M", "A"},
 			{"P", "A", "N", "A", "L", ""},
 		},
