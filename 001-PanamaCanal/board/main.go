@@ -1,9 +1,10 @@
 // Package board defines the structure and methods for a single game board
 package board
 
-import "errors"
-
-import "log"
+import (
+	"errors"
+	"log"
+)
 
 // GameBoard is a struct that holds a single game board.
 // It is linked to how it was derived and another board that derives from it.
