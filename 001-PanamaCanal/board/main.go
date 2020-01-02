@@ -8,13 +8,18 @@ import "log"
 // GameBoard is a struct that holds a single game board.
 // It is linked to how it was derived and another board that derives from it.
 type GameBoard struct {
-	board Board
-	prev  *GameBoard
-	next  *GameBoard
+	board             Board
+	prev              *GameBoard
+	tileMoveDirection string
 }
 
 // Board is a 2D array to hold two lines of 6 characters
 type Board [2][6]string
+
+var SolutionBoard = Board{
+	{"P", "A", "N", "A", "M", "A"},
+	{"C", "A", "N", "A", "L", ""},
+}
 
 func (b *GameBoard) String() string {
 	bb := *b
@@ -43,9 +48,9 @@ func (b *GameBoard) String() string {
 	return s
 }
 
-// Variate is a method that generates potential game boards by moving tiles legally
+// Variate that generates potential game boards by moving tiles legally
 // and returns the potentials as an array of GameBoard pointers
-func (b *GameBoard) Variate() []*GameBoard {
+func Variate(b *GameBoard) []*GameBoard {
 	result := []*GameBoard{}
 
 	li, ci, err := getEmptyTileCoordinates(b)
@@ -53,13 +58,45 @@ func (b *GameBoard) Variate() []*GameBoard {
 		log.Fatal("Bad board generated in", *b)
 	}
 
+	currentBoard := *b
 	if li == 1 {
 		// Create Scenario: moving tile down (if possible)
-
+		newBoard := currentBoard
+		newBoard.board[li][ci] = newBoard.board[li-1][ci]
+		newBoard.board[li-1][ci] = ""
+		newBoard.prev = b
+		newBoard.tileMoveDirection = "down"
+		result = append(result, &newBoard)
 	} else {
 		// Create Scenario: moving tile up
-
+		newBoard := currentBoard
+		newBoard.board[li][ci] = newBoard.board[li+1][ci]
+		newBoard.board[li+1][ci] = ""
+		newBoard.prev = b
+		newBoard.tileMoveDirection = "up"
+		result = append(result, &newBoard)
 	}
+
+	// Create Scenario: moving tile left (if possible)
+	if ci != 5 {
+		newBoard := currentBoard
+		newBoard.board[li][ci] = newBoard.board[li][ci+1]
+		newBoard.board[li][ci+1] = ""
+		newBoard.prev = b
+		newBoard.tileMoveDirection = "left"
+		result = append(result, &newBoard)
+	}
+
+	// Create Scenario: moving tile right (if possible)
+	if ci != 0 {
+		newBoard := currentBoard
+		newBoard.board[li][ci] = newBoard.board[li][ci-1]
+		newBoard.board[li][ci-1] = ""
+		newBoard.prev = b
+		newBoard.tileMoveDirection = "right"
+		result = append(result, &newBoard)
+	}
+
 	return result
 }
 
@@ -74,4 +111,9 @@ func getEmptyTileCoordinates(b *GameBoard) (int, int, error) {
 	}
 
 	return -1, -1, errors.New("Could not find the empty tile coordinate for")
+}
+
+// IsSolutionBoard checks if the board is the target Board
+func IsSolutionBoard(b *GameBoard) bool {
+	return b.board == SolutionBoard
 }
