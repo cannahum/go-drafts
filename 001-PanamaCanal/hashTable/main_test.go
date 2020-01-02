@@ -199,3 +199,118 @@ func TestInsert_NonEmpty(t *testing.T) {
 		t.Error("State of the second linked list is broken")
 	}
 }
+
+func TestInsert_NonEmptyLongerLinkedList(t *testing.T) {
+	gbt := GameBoardHashTable{
+		table: map[string]*hashLinkedListNode{},
+	}
+
+	// create mock hash function
+	hashComputer := mockHashComputer{
+		stayConstant: true,
+	}
+
+	board0 := boards[0]
+	_, _ = gbt.Insert(&board0, &hashComputer)
+
+	board1 := boards[1]
+	_, _ = gbt.Insert(&board1, &hashComputer)
+
+	board2 := boards[2]
+	gb, ok := gbt.Insert(&board2, &hashComputer)
+
+	if !ok {
+		t.Error("Expected to insert gameboard but NOT ok")
+	}
+
+	if gb != &board2 {
+		t.Error("Expected to receive", &board2, "Got", gb)
+	}
+
+	if gbt.numOfKeys != 1 {
+		t.Error("Unexpected number of keys", gbt.numOfKeys)
+	}
+
+	if gbt.numOfLongestLinkedList != 3 {
+		t.Error("Unexpected number of longest linked list", gbt.numOfLongestLinkedList)
+	}
+
+	linkedList := gbt.table["hash0"]
+	if linkedList.gameBoard != &board0 {
+		t.Error("State of the first linked list node is broken")
+	}
+	if linkedList.next.gameBoard != &board1 {
+		t.Error("State of the second linked list is broken")
+	}
+	if linkedList.next.next.gameBoard != &board2 {
+		t.Error("State of the third linked list is broken")
+	}
+}
+
+func TestInsert_AlreadyExists(t *testing.T) {
+	gbt := GameBoardHashTable{
+		table: map[string]*hashLinkedListNode{},
+	}
+
+	// create mock hash function
+	hashComputer := mockHashComputer{
+		stayConstant: true,
+	}
+
+	board0 := boards[0]
+	_, _ = gbt.Insert(&board0, &hashComputer)
+
+	board1 := boards[0]
+	_, ok := gbt.Insert(&board1, &hashComputer)
+
+	if ok {
+		t.Error("Expected NOT ok Got ok")
+	}
+
+	if gbt.numOfKeys != 1 {
+		t.Error("Unexpected number of keys", gbt.numOfKeys)
+	}
+
+	if gbt.numOfLongestLinkedList != 1 {
+		t.Error("Unexpected number of longest linked list", gbt.numOfLongestLinkedList)
+	}
+
+	linkedList := gbt.table["hash0"]
+	if linkedList.gameBoard != &board0 {
+		t.Error("State of the first linked list node is broken")
+	}
+	if linkedList.next != nil {
+		t.Error("Expected linked list second item to be nil Got", linkedList.next)
+	}
+}
+
+func TestInsert_NonEmptyNewKey(t *testing.T) {
+	gbt := GameBoardHashTable{
+		table: map[string]*hashLinkedListNode{},
+	}
+
+	// create mock hash function
+	hashComputer := mockHashComputer{}
+
+	board0 := boards[0]
+	_, _ = gbt.Insert(&board0, &hashComputer)
+
+	board1 := boards[1]
+	gb, ok := gbt.Insert(&board1, &hashComputer)
+
+	if !ok {
+		t.Error("Expected to insert gameboard but NOT ok")
+	}
+
+	if gb != &board1 {
+		t.Error("Expected to receive", &board1, "Got", gb)
+	}
+
+	if gbt.numOfKeys != 2 {
+		t.Error("Unexpected number of keys", gbt.numOfKeys)
+	}
+
+	if gbt.numOfLongestLinkedList != 1 {
+		t.Error("Unexpected number of longest linked list", gbt.numOfLongestLinkedList)
+	}
+}
