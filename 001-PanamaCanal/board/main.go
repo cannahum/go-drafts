@@ -1,6 +1,10 @@
 // Package board defines the structure and methods for a single game board
 package board
 
+import "errors"
+
+import "log"
+
 // GameBoard is a struct that holds a single game board.
 // It is linked to how it was derived and another board that derives from it.
 type GameBoard struct {
@@ -42,6 +46,32 @@ func (b *GameBoard) String() string {
 // Variate is a method that generates potential game boards by moving tiles legally
 // and returns the potentials as an array of GameBoard pointers
 func (b *GameBoard) Variate() []*GameBoard {
-	// TODO
-	return []*GameBoard{}
+	result := []*GameBoard{}
+
+	li, ci, err := getEmptyTileCoordinates(b)
+	if err != nil {
+		log.Fatal("Bad board generated in", *b)
+	}
+
+	if li == 1 {
+		// Create Scenario: moving tile down (if possible)
+
+	} else {
+		// Create Scenario: moving tile up
+
+	}
+	return result
+}
+
+func getEmptyTileCoordinates(b *GameBoard) (int, int, error) {
+	board := b.board
+	for i, line := range board {
+		for j, char := range line {
+			if char == "" {
+				return i, j, nil
+			}
+		}
+	}
+
+	return -1, -1, errors.New("Could not find the empty tile coordinate for")
 }
