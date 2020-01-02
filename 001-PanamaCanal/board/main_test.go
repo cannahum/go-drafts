@@ -160,3 +160,29 @@ func TestIsSolutionBoard(t *testing.T) {
 		t.Error("Expected false Got true")
 	}
 }
+
+func BenchmarkIsSolutionBoard_Truthy(t *testing.B) {
+	truthy := GameBoard{
+		board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+	}
+
+	for i := 0; i < t.N; i++ {
+		_ = IsSolutionBoard(&truthy)
+	}
+}
+
+func BenchmarkIsSolutionBoard_Falsy(t *testing.B) {
+	falsy := GameBoard{
+		board: Board{
+			{"C", "A", "N", "A", "M", "A"},
+			{"P", "A", "N", "A", "L", ""},
+		},
+	}
+
+	for i := 0; i < t.N; i++ {
+		_ = IsSolutionBoard(&falsy)
+	}
+}
