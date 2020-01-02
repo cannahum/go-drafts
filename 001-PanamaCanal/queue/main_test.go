@@ -61,7 +61,28 @@ func BenchmarkString(t *testing.B) {
 	}
 }
 
-func TestEnqueue(t *testing.T) {
+func TestEnqueue_Empty(t *testing.T) {
+	b1 := board.GameBoard{
+		Board: board.Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+	}
+	gbq := GameBoardQueue{
+		queue: []*board.GameBoard{},
+	}
+	gbq.Enqueue(&b1)
+
+	if gbq.queue[0] != &b1 {
+		t.Errorf("Expected [%v], Got [%v]\n", &b1, gbq.queue[0])
+	}
+
+	if gbq.maxLen != 1 {
+		t.Error("Expected length to go up by one, Got", gbq.maxLen)
+	}
+}
+
+func TestEnqueue_NonEmpty(t *testing.T) {
 	b1 := board.GameBoard{
 		Board: board.Board{
 			{"P", "A", "N", "A", "M", "A"},
@@ -73,6 +94,7 @@ func TestEnqueue(t *testing.T) {
 		queue: []*board.GameBoard{
 			&b1,
 		},
+		maxLen: 1,
 	}
 
 	oldLength := gbq.maxLen

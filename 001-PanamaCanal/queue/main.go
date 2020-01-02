@@ -38,8 +38,9 @@ func (gbq GameBoardQueue) String() string {
 func (gbq *GameBoardQueue) Enqueue(b *board.GameBoard) *GameBoardQueue {
 	q := gbq.queue
 	gbq.queue = append(q, b)
-	if len(q) > gbq.maxLen {
-		gbq.maxLen = len(q)
+	newLength := len(gbq.queue)
+	if newLength > gbq.maxLen {
+		gbq.maxLen = newLength
 	}
 	return gbq
 }
