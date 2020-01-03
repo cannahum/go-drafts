@@ -74,6 +74,7 @@ func (ht *GameBoardHashTable) Insert(b *board.GameBoard, getHash HashComputer) (
 			ht.table[hashKey] = node
 			hasInserted = true
 			ht.numOfKeys++
+			lengthOfThisLinkedList++
 		} else {
 			lengthOfThisLinkedList = 1
 			for node.next != nil {
