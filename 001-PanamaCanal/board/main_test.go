@@ -6,6 +6,60 @@ import (
 	"testing"
 )
 
+func TestGetChar(t *testing.T) {
+	b := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+	}
+
+	char := b.GetChar()
+	if char != "L" {
+		t.Error("Expected L Got", char)
+	}
+}
+func TestGetDirection(t *testing.T) {
+	b := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+	}
+	direction := b.GetDirection()
+	if direction != "left" {
+		t.Error("Expected left Got", direction)
+	}
+}
+func TestGetPrev(t *testing.T) {
+	b1 := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+	}
+	b2 := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+		prev:              &b1,
+	}
+
+	prev := b2.GetPrev()
+	if prev != &b1 {
+		t.Error("Expected", &b1, "Got", prev)
+	}
+}
+
 func TestString(t *testing.T) {
 	b := GameBoard{
 		Board: Board{
