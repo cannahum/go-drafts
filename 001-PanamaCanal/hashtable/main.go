@@ -10,20 +10,30 @@ type hashLinkedListNode struct {
 	next      *hashLinkedListNode
 }
 
-// HashComputer is an interface that implements the getHashKey method
+// HashComputer is an interface that implements the GetHashKey method
 type HashComputer interface {
-	getHashKey(b *board.GameBoard) string
+	GetHashKey(b *board.GameBoard) int
 }
 
-// GameBoardHashTable is a hash table that maps hash keys to a linked list of GameBoard items
+// GameBoardHashTable is the object in which we keep all the "seen" boards
 type GameBoardHashTable struct {
-	table                  map[string]*hashLinkedListNode
+	table                  map[int]*hashLinkedListNode
 	numOfKeys              int
 	numOfLongestLinkedList int
 }
 
-func (ht *GameBoardHashTable) has(b *board.GameBoard, getHash HashComputer) bool {
-	hashKey := getHash.getHashKey(b)
+// NewGameBoardHashTable Constructs a GameBoardHashTable object
+func NewGameBoardHashTable() GameBoardHashTable {
+	return GameBoardHashTable{
+		table: map[int]*hashLinkedListNode{},
+		numOfKeys: 0,
+		numOfLongestLinkedList: 0,
+	}
+}
+
+// Has checks if a given board is already "seen"; in other words, it exists in the table
+func (ht *GameBoardHashTable) Has(b *board.GameBoard, getHash HashComputer) bool {
+	hashKey := getHash.GetHashKey(b)
 	node := ht.table[hashKey]
 
 	for node != nil {
@@ -41,8 +51,8 @@ func (ht *GameBoardHashTable) has(b *board.GameBoard, getHash HashComputer) bool
 // it adds it
 func (ht *GameBoardHashTable) Insert(b *board.GameBoard, getHash HashComputer) (*board.GameBoard, bool) {
 	hasInserted := false
-	if !ht.has(b, getHash) {
-		hashKey := getHash.getHashKey(b)
+	if !ht.Has(b, getHash) {
+		hashKey := getHash.GetHashKey(b)
 		node := ht.table[hashKey]
 
 		if node == nil {

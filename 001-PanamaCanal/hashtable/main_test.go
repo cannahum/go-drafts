@@ -1,7 +1,6 @@
 package hashtable
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/cannahum/go-drafts/001-PanamaCanal/board"
@@ -39,45 +38,43 @@ type mockHashComputer struct {
 	stayConstant bool
 }
 
-func (h *mockHashComputer) getHashKey(b *board.GameBoard) string {
+func (h *mockHashComputer) GetHashKey(b *board.GameBoard) int {
 	i := h.index
 	if !h.stayConstant {
 		h.index = h.index + 1
 	}
-	return fmt.Sprintf("hash%d", i)
+	return i
 }
 
 func TestHas_Empty(t *testing.T) {
-	gbt := GameBoardHashTable{}
+	gbt := NewGameBoardHashTable()
 
 	// create mock hash function
 	hashComputer := mockHashComputer{}
 
 	for _, v := range boards {
-		if gbt.has(&v, &hashComputer) {
+		if gbt.Has(&v, &hashComputer) {
 			t.Error("Expected", v, "not to exist but it does")
 		}
 	}
 }
 
 func TestHas_NotEmptySingleNode(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
-	gbt.table["hash0"] = &hashLinkedListNode{
+	gbt.table[0] = &hashLinkedListNode{
 		gameBoard: &boards[0],
 	}
 
-	gbt.table["hash1"] = &hashLinkedListNode{
+	gbt.table[1] = &hashLinkedListNode{
 		gameBoard: &boards[1],
 	}
 
-	gbt.table["hash2"] = &hashLinkedListNode{
+	gbt.table[2] = &hashLinkedListNode{
 		gameBoard: &boards[2],
 	}
 
-	gbt.table["hash3"] = &hashLinkedListNode{
+	gbt.table[3] = &hashLinkedListNode{
 		gameBoard: &boards[3],
 	}
 
@@ -85,7 +82,7 @@ func TestHas_NotEmptySingleNode(t *testing.T) {
 	hashComputer := mockHashComputer{}
 
 	for _, v := range boards {
-		result := gbt.has(&v, &hashComputer)
+		result := gbt.Has(&v, &hashComputer)
 		if !result {
 			t.Error("Expected", v, "to exist but it does not", result)
 		}
@@ -93,19 +90,17 @@ func TestHas_NotEmptySingleNode(t *testing.T) {
 }
 
 func TestHas_NotEmptyLinkedList(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
-	gbt.table["hash0"] = &hashLinkedListNode{
+	gbt.table[0] = &hashLinkedListNode{
 		gameBoard: &boards[0],
 	}
 
-	gbt.table["hash0"].next = &hashLinkedListNode{
+	gbt.table[0].next = &hashLinkedListNode{
 		gameBoard: &boards[1],
 	}
 
-	gbt.table["hash0"].next.next = &hashLinkedListNode{
+	gbt.table[0].next.next = &hashLinkedListNode{
 		gameBoard: &boards[2],
 	}
 
@@ -116,7 +111,7 @@ func TestHas_NotEmptyLinkedList(t *testing.T) {
 
 	// Everything should be found, except the last
 	for i, v := range boards {
-		result := gbt.has(&v, &hashComputer)
+		result := gbt.Has(&v, &hashComputer)
 
 		if i < 3 {
 			if !result {
@@ -131,9 +126,7 @@ func TestHas_NotEmptyLinkedList(t *testing.T) {
 }
 
 func TestInsert_Empty(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
 	// create mock hash function
 	hashComputer := mockHashComputer{
@@ -160,9 +153,7 @@ func TestInsert_Empty(t *testing.T) {
 }
 
 func TestInsert_NonEmpty(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
 	// create mock hash function
 	hashComputer := mockHashComputer{
@@ -191,7 +182,7 @@ func TestInsert_NonEmpty(t *testing.T) {
 		t.Error("Unexpected number of longest linked list", gbt.numOfLongestLinkedList)
 	}
 
-	linkedList := gbt.table["hash0"]
+	linkedList := gbt.table[0]
 	if linkedList.gameBoard != &board0 {
 		t.Error("State of the first linked list node is broken")
 	}
@@ -201,9 +192,7 @@ func TestInsert_NonEmpty(t *testing.T) {
 }
 
 func TestInsert_NonEmptyLongerLinkedList(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
 	// create mock hash function
 	hashComputer := mockHashComputer{
@@ -235,7 +224,7 @@ func TestInsert_NonEmptyLongerLinkedList(t *testing.T) {
 		t.Error("Unexpected number of longest linked list", gbt.numOfLongestLinkedList)
 	}
 
-	linkedList := gbt.table["hash0"]
+	linkedList := gbt.table[0]
 	if linkedList.gameBoard != &board0 {
 		t.Error("State of the first linked list node is broken")
 	}
@@ -248,9 +237,7 @@ func TestInsert_NonEmptyLongerLinkedList(t *testing.T) {
 }
 
 func TestInsert_AlreadyExists(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
 	// create mock hash function
 	hashComputer := mockHashComputer{
@@ -275,7 +262,7 @@ func TestInsert_AlreadyExists(t *testing.T) {
 		t.Error("Unexpected number of longest linked list", gbt.numOfLongestLinkedList)
 	}
 
-	linkedList := gbt.table["hash0"]
+	linkedList := gbt.table[0]
 	if linkedList.gameBoard != &board0 {
 		t.Error("State of the first linked list node is broken")
 	}
@@ -285,9 +272,7 @@ func TestInsert_AlreadyExists(t *testing.T) {
 }
 
 func TestInsert_NonEmptyNewKey(t *testing.T) {
-	gbt := GameBoardHashTable{
-		table: map[string]*hashLinkedListNode{},
-	}
+	gbt := NewGameBoardHashTable()
 
 	// create mock hash function
 	hashComputer := mockHashComputer{}
