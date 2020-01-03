@@ -22,6 +22,16 @@ type GameBoardHashTable struct {
 	numOfLongestLinkedList int
 }
 
+// GetNumOfKeys returns the number of keys on the hash table.
+func (ht *GameBoardHashTable) GetNumOfKeys() int {
+	return ht.numOfKeys
+}
+
+// GetNumOfLongestLinkedList returns the number of keys on the hash table.
+func (ht *GameBoardHashTable) GetNumOfLongestLinkedList() int {
+	return ht.numOfLongestLinkedList
+}                 
+             
 // NewGameBoardHashTable Constructs a GameBoardHashTable object
 func NewGameBoardHashTable() GameBoardHashTable {
 	return GameBoardHashTable{

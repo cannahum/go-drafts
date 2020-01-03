@@ -66,6 +66,10 @@ func main() {
 		i++
 	}
 
+	// Print statistics
+	fmt.Println("Data Structures and Stats")
+	fmt.Printf("HashTable: # of Keys: %d, Key with largest list has %d nodes\n", hashTable.GetNumOfKeys(), hashTable.GetNumOfLongestLinkedList())
+	fmt.Printf("Queue: Current size: %d, The maximum it ever got was: %d\n", queue.GetCurrentLength(), queue.GetMaxLength())
 	fmt.Println("Goodbye!")
 }
 
@@ -93,6 +97,7 @@ func doFinishSequence(s *stack.GameBoardStack) {
 			fmt.Printf("Step: %d: Move %s %s\n", i, b.GetChar(), b.GetDirection())
 		}
 		fmt.Println(b)
+		fmt.Println()
 		i++
 	}
 }

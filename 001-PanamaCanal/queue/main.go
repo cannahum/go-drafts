@@ -13,6 +13,16 @@ type GameBoardQueue struct {
 	maxLen int
 }
 
+// GetCurrentLength returns the current size of the queue
+func (gbq *GameBoardQueue) GetCurrentLength() int {
+	return len(gbq.queue)
+}
+
+// GetMaxLength returns the max size of the queue during the operation
+func (gbq *GameBoardQueue) GetMaxLength() int {
+	return len(gbq.queue)
+}
+
 // String prints out the queue
 func (gbq GameBoardQueue) String() string {
 	l := len(gbq.queue)
