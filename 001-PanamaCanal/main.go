@@ -49,11 +49,8 @@ func main() {
 			log.Fatal(err)
 		}
 
-		fmt.Println("Working loop:", i)
-		i++
-
 		if board.IsSolutionBoard(currentBoard) {
-			stack.Push(currentBoard)
+			prepareStack(currentBoard, &stack)
 			doFinishSequence(&stack)
 			break
 		} else {
@@ -66,11 +63,36 @@ func main() {
 				}
 			}
 		}
+		i++
 	}
 
 	fmt.Println("Goodbye!")
 }
 
+func prepareStack(b *board.GameBoard, s *stack.GameBoardStack) {
+	for b != nil {
+		s.Push(b)
+		b = b.GetPrev()
+	}
+}
+
 func doFinishSequence(s *stack.GameBoardStack) {
-	fmt.Println("Finish sequence")
+	fmt.Println("Found a solution!")
+
+	i := 0
+	for {
+		b, err := s.Pop()
+
+		if err != nil {
+			break
+		}
+
+		if i == 0 {
+			fmt.Printf("Step: %d:\n", i)
+		} else {
+			fmt.Printf("Step: %d: Move %s %s\n", i, b.GetChar(), b.GetDirection())
+		}
+		fmt.Println(b)
+		i++
+	}
 }

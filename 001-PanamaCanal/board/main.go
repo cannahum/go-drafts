@@ -6,16 +6,33 @@ import (
 	"log"
 )
 
+// Board is a 2D array to hold two lines of 6 characters
+type Board [2][6]string
+
 // GameBoard is a struct that holds a single game board.
 // It is linked to how it was derived and another board that derives from it.
 type GameBoard struct {
 	Board             Board
 	prev              *GameBoard
 	tileMoveDirection string
+	tileMoveChar      string
 }
 
-// Board is a 2D array to hold two lines of 6 characters
-type Board [2][6]string
+// GetChar returns the character (string) of the tile that was moved
+func (gb *GameBoard) GetChar() string {
+	return gb.tileMoveChar
+}
+
+// GetDirection returns the direction of the tile that was moved to achieve this board.
+// It'll return "up", "down", "left", or "right"
+func (gb *GameBoard) GetDirection() string {
+	return gb.tileMoveDirection
+}
+
+// GetPrev returns the previous GameBoard from which this board was created
+func (gb *GameBoard) GetPrev() *GameBoard {
+	return gb.prev
+}
 
 // SolutionBoard is the target board, the solution to the Panama Canal puzzle
 var SolutionBoard = Board{
@@ -68,6 +85,7 @@ func Variate(b *GameBoard) []*GameBoard {
 		newBoard.Board[li-1][ci] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "down"
+		newBoard.tileMoveChar = newBoard.Board[li][ci]
 		result = append(result, &newBoard)
 	} else {
 		// Create Scenario: moving tile up
@@ -76,6 +94,7 @@ func Variate(b *GameBoard) []*GameBoard {
 		newBoard.Board[li+1][ci] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "up"
+		newBoard.tileMoveChar = newBoard.Board[li][ci]
 		result = append(result, &newBoard)
 	}
 
@@ -86,6 +105,7 @@ func Variate(b *GameBoard) []*GameBoard {
 		newBoard.Board[li][ci+1] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "left"
+		newBoard.tileMoveChar = newBoard.Board[li][ci]
 		result = append(result, &newBoard)
 	}
 
@@ -96,6 +116,7 @@ func Variate(b *GameBoard) []*GameBoard {
 		newBoard.Board[li][ci-1] = ""
 		newBoard.prev = b
 		newBoard.tileMoveDirection = "right"
+		newBoard.tileMoveChar = newBoard.Board[li][ci]
 		result = append(result, &newBoard)
 	}
 
