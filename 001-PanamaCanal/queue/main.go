@@ -20,7 +20,7 @@ func (gbq *GameBoardQueue) GetCurrentLength() int {
 
 // GetMaxLength returns the max size of the queue during the operation
 func (gbq *GameBoardQueue) GetMaxLength() int {
-	return len(gbq.queue)
+	return gbq.maxLen
 }
 
 // String prints out the queue

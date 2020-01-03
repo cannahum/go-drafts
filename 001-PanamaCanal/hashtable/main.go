@@ -30,13 +30,13 @@ func (ht *GameBoardHashTable) GetNumOfKeys() int {
 // GetNumOfLongestLinkedList returns the number of keys on the hash table.
 func (ht *GameBoardHashTable) GetNumOfLongestLinkedList() int {
 	return ht.numOfLongestLinkedList
-}                 
-             
+}
+
 // NewGameBoardHashTable Constructs a GameBoardHashTable object
 func NewGameBoardHashTable() GameBoardHashTable {
 	return GameBoardHashTable{
-		table: map[int]*hashLinkedListNode{},
-		numOfKeys: 0,
+		table:                  map[int]*hashLinkedListNode{},
+		numOfKeys:              0,
 		numOfLongestLinkedList: 0,
 	}
 }
@@ -61,9 +61,11 @@ func (ht *GameBoardHashTable) Has(b *board.GameBoard, getHash HashComputer) bool
 // it adds it
 func (ht *GameBoardHashTable) Insert(b *board.GameBoard, getHash HashComputer) (*board.GameBoard, bool) {
 	hasInserted := false
+
 	if !ht.Has(b, getHash) {
 		hashKey := getHash.GetHashKey(b)
 		node := ht.table[hashKey]
+		var lengthOfThisLinkedList int
 
 		if node == nil {
 			node = &hashLinkedListNode{
@@ -71,11 +73,9 @@ func (ht *GameBoardHashTable) Insert(b *board.GameBoard, getHash HashComputer) (
 			}
 			ht.table[hashKey] = node
 			hasInserted = true
-
 			ht.numOfKeys++
-			ht.numOfLongestLinkedList = 1
 		} else {
-			lengthOfThisLinkedList := 1
+			lengthOfThisLinkedList = 1
 			for node.next != nil {
 				node = node.next
 				lengthOfThisLinkedList++
@@ -85,7 +85,11 @@ func (ht *GameBoardHashTable) Insert(b *board.GameBoard, getHash HashComputer) (
 				gameBoard: b,
 			}
 			hasInserted = true
-			ht.numOfLongestLinkedList = lengthOfThisLinkedList + 1
+			lengthOfThisLinkedList++
+		}
+
+		if lengthOfThisLinkedList > ht.numOfLongestLinkedList {
+			ht.numOfLongestLinkedList = lengthOfThisLinkedList
 		}
 	}
 	return b, hasInserted
