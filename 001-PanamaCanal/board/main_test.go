@@ -2,8 +2,63 @@ package board
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
+
+func TestGetChar(t *testing.T) {
+	b := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+	}
+
+	char := b.GetChar()
+	if char != "L" {
+		t.Error("Expected L Got", char)
+	}
+}
+func TestGetDirection(t *testing.T) {
+	b := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+	}
+	direction := b.GetDirection()
+	if direction != "left" {
+		t.Error("Expected left Got", direction)
+	}
+}
+func TestGetPrev(t *testing.T) {
+	b1 := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+	}
+	b2 := GameBoard{
+		Board: Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+		tileMoveDirection: "left",
+		tileMoveChar:      "L",
+		prev:              &b1,
+	}
+
+	prev := b2.GetPrev()
+	if prev != &b1 {
+		t.Error("Expected", &b1, "Got", prev)
+	}
+}
 
 func TestString(t *testing.T) {
 	b := GameBoard{
@@ -133,6 +188,112 @@ func BenchmarkGetEmptyTileCoordinates(t *testing.B) {
 
 	for i := 0; i < t.N; i++ {
 		_, _, _ = getEmptyTileCoordinates(&g)
+	}
+}
+
+type variateTestCase struct {
+	gameBoard GameBoard
+	answer    []GameBoard
+}
+
+func TestVariate(t *testing.T) {
+	canamaPanalStart := GameBoard{
+		Board: Board{
+			{"C", "A", "N", "A", "M", "A"},
+			{"P", "A", "N", "A", "L", ""},
+		},
+	}
+
+	canamaPanalDown := GameBoard{
+		Board: Board{
+			{"C", "A", "N", "A", "M", ""},
+			{"P", "A", "N", "A", "L", "A"},
+		},
+	}
+
+	canamaPanalRight := GameBoard{
+		Board: Board{
+			{"C", "A", "N", "A", "M", "A"},
+			{"P", "A", "N", "A", "", "L"},
+		},
+	}
+
+	canamaPanalDownRight := GameBoard{
+		Board: Board{
+			{"C", "A", "N", "A", "", "M"},
+			{"P", "A", "N", "A", "L", "A"},
+		},
+	}
+
+	canamaPanalNorthWest := GameBoard{
+		Board: Board{
+			{"", "C", "A", "N", "A", "M"},
+			{"P", "A", "N", "A", "L", "A"},
+		},
+	}
+
+	canamaPanalNorthWestLeft := GameBoard{
+		Board: Board{
+			{"C", "", "A", "N", "A", "M"},
+			{"P", "A", "N", "A", "L", "A"},
+		},
+	}
+
+	canamaPanalNorthWestUp := GameBoard{
+		Board: Board{
+			{"P", "C", "A", "N", "A", "M"},
+			{"", "A", "N", "A", "L", "A"},
+		},
+	}
+
+	testCases := []variateTestCase{
+		{
+			gameBoard: canamaPanalStart,
+			answer: []GameBoard{
+				canamaPanalDown,
+				canamaPanalRight,
+			},
+		},
+		{
+			gameBoard: canamaPanalDown,
+			answer: []GameBoard{
+				canamaPanalDownRight,
+				canamaPanalStart,
+			},
+		},
+		{
+			gameBoard: canamaPanalNorthWest,
+			answer: []GameBoard{
+				canamaPanalNorthWestLeft,
+				canamaPanalNorthWestUp,
+			},
+		},
+	}
+
+	for _, scenario := range testCases {
+		result := Variate(&scenario.gameBoard)
+
+		if len(result) != len(scenario.answer) {
+			t.Errorf("Expected %d results, Got %d\n", len(scenario.answer), len(result))
+		}
+
+		for _, variationBoard := range result {
+			foundIdentical := false
+			for _, expectedBoard := range scenario.answer {
+				if variationBoard.Board == expectedBoard.Board {
+					foundIdentical = true
+				}
+			}
+			if !foundIdentical {
+				t.Error("Expected", scenario.answer)
+			}
+
+			// Check that prev field is set
+			typeOfPrev := reflect.TypeOf(variationBoard.prev).String()
+			if typeOfPrev != "*board.GameBoard" {
+				t.Error("Expected reference to prev but NOT ok")
+			}
+		}
 	}
 }
 
