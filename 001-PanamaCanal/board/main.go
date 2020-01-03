@@ -40,8 +40,8 @@ var SolutionBoard = Board{
 	{"C", "A", "N", "A", "L", ""},
 }
 
-func (b *GameBoard) String() string {
-	bb := *b
+func (gb *GameBoard) String() string {
+	bb := *gb
 
 	s := ""
 	for i, line := range bb.Board {
