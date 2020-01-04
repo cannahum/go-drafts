@@ -42,34 +42,33 @@ func main() {
 
 	queue.Enqueue(&firstBoard)
 
-	i := 0
 	for {
 		currentBoard, err := queue.Dequeue()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		if board.IsSolutionBoard(currentBoard) {
-			prepareStack(currentBoard, &stack)
-			doFinishSequence(&stack)
-			break
-		} else {
-			hashTable.Insert(currentBoard, &hasher)
+		if !hashTable.Has(currentBoard, &hasher) {
+			if board.IsSolutionBoard(currentBoard) {
+				prepareStack(currentBoard, &stack)
+				doFinishSequence(&stack)
+				break
+			} else {
+				hashTable.Insert(currentBoard, &hasher)
 
-			variations := board.Variate(currentBoard)
-			for _, v := range variations {
-				if !hashTable.Has(v, &hasher) {
+				variations := board.Variate(currentBoard)
+				for _, v := range variations {
 					queue.Enqueue(v)
 				}
 			}
 		}
-		i++
 	}
 
 	// Print statistics
 	fmt.Println("Data Structures and Stats")
-	fmt.Printf("HashTable: # of Keys: %d, Key with largest list has %d nodes\n", hashTable.GetNumOfKeys(), hashTable.GetNumOfLongestLinkedList())
+	fmt.Printf("HashTable: # of Keys: %d, Key with largest Linked List has %d nodes\n", hashTable.GetNumOfKeys(), hashTable.GetNumOfLongestLinkedList())
 	fmt.Printf("Queue: Current size: %d, The maximum it ever got was: %d\n", queue.GetCurrentLength(), queue.GetMaxLength())
+	fmt.Printf("Stack: Current size: %d, The maximum it ever got was: %d\n", stack.GetCurrentLength(), stack.GetMaxLength())
 	fmt.Println("Goodbye!")
 }
 

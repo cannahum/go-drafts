@@ -46,6 +46,54 @@ func (h *mockHashComputer) GetHashKey(b *board.GameBoard) int {
 	return i
 }
 
+func TestGetNumOfKeys(t *testing.T) {
+	gbt := NewGameBoardHashTable()
+	// create mock hash function that returns a different key each time
+	hashComputer := mockHashComputer{}
+
+	for _, b := range boards {
+		gbt.Insert(&b, &hashComputer)
+	}
+
+	x := gbt.GetNumOfKeys()
+	if x != len(boards) {
+		t.Error("Expected", len(boards), "Got", x)
+	}
+}
+
+func TestGetNumOfLongestLinkedList_DifferentKeys(t *testing.T) {
+	gbt := NewGameBoardHashTable()
+	// create mock hash function that returns a different key each time
+	hashComputer := mockHashComputer{}
+
+	for _, b := range boards {
+		gbt.Insert(&b, &hashComputer)
+	}
+
+	x := gbt.GetNumOfLongestLinkedList()
+	if x != 1 {
+		t.Error("Expected 1 Got", x)
+	}
+}
+
+func TestGetNumOfLongestLinkedList_ConstantKeys(t *testing.T) {
+	gbt := NewGameBoardHashTable()
+	// create mock hash function that returns the same key every time
+	hashComputer := mockHashComputer{
+		stayConstant: true,
+	}
+
+	gbt.Insert(&boards[0], &hashComputer)
+	gbt.Insert(&boards[1], &hashComputer)
+	gbt.Insert(&boards[2], &hashComputer)
+	gbt.Insert(&boards[3], &hashComputer)
+
+	x := gbt.GetNumOfLongestLinkedList()
+	if x != len(boards) {
+		t.Error("Expected", len(boards), "Got", x)
+	}
+}
+
 func TestHas_Empty(t *testing.T) {
 	gbt := NewGameBoardHashTable()
 

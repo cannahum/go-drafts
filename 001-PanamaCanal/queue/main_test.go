@@ -7,6 +7,84 @@ import (
 	"github.com/cannahum/go-drafts/001-PanamaCanal/board"
 )
 
+func TestGetCurrentLength(t *testing.T) {
+	b1 := board.GameBoard{
+		Board: board.Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+	}
+
+	b2 := board.GameBoard{
+		Board: board.Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+	}
+
+	gbq := GameBoardQueue{
+		queue: []*board.GameBoard{},
+	}
+
+	x := gbq.GetCurrentLength()
+	if x != 0 {
+		t.Error("Expected 0 Got", x)
+	}
+
+	gbq.Enqueue(&b1)
+	gbq.Enqueue(&b2)
+
+	x = gbq.GetCurrentLength()
+	if x != 2 {
+		t.Error("Expected 2 Got", x)
+	}
+
+	_, _ = gbq.Dequeue()
+	x = gbq.GetCurrentLength()
+	if x != 1 {
+		t.Error("Expected 1 Got", x)
+	}
+}
+
+func TestGetMaxLength(t *testing.T) {
+	b1 := board.GameBoard{
+		Board: board.Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+	}
+
+	b2 := board.GameBoard{
+		Board: board.Board{
+			{"P", "A", "N", "A", "M", "A"},
+			{"C", "A", "N", "A", "L", ""},
+		},
+	}
+
+	gbq := GameBoardQueue{
+		queue: []*board.GameBoard{},
+	}
+
+	x := gbq.GetMaxLength()
+	if x != 0 {
+		t.Error("Expected 0 Got", x)
+	}
+
+	gbq.Enqueue(&b1)
+	gbq.Enqueue(&b2)
+
+	x = gbq.GetMaxLength()
+	if x != 2 {
+		t.Error("Expected 2 Got", x)
+	}
+
+	_, _ = gbq.Dequeue()
+	x = gbq.GetMaxLength()
+	if x != 2 {
+		t.Error("Expected 2 Got", x)
+	}
+}
+
 func TestString_NotEmpty(t *testing.T) {
 	b := board.GameBoard{
 		Board: board.Board{

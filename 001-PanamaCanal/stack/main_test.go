@@ -22,6 +22,12 @@ func TestPush(t *testing.T) {
 	if gbs.stack[0] != &b1 {
 		t.Error("Expected first item to be", b1, "Got", gbs.stack[0])
 	}
+	if gbs.GetMaxLength() != 1 {
+		t.Error("Expected maxLen to be 1 Got", gbs.GetMaxLength())
+	}
+	if gbs.GetCurrentLength() != 1 {
+		t.Error("Expected current length to be 1 Got", gbs.GetCurrentLength())
+	}
 
 	b2 := board.GameBoard{
 		Board: board.Board{
@@ -35,6 +41,12 @@ func TestPush(t *testing.T) {
 	}
 	if gbs.stack[0] != &b1 || gbs.stack[1] != &b2 {
 		t.Errorf("Expected [%v, %v], Got [%v, %v]\n", &b1, b2, gbs.stack[0], gbs.stack[1])
+	}
+	if gbs.GetMaxLength() != 2 {
+		t.Error("Expected maxLen to be 2 Got", gbs.GetMaxLength())
+	}
+	if gbs.GetCurrentLength() != 2 {
+		t.Error("Expected current length to be 2 Got", gbs.GetCurrentLength())
 	}
 }
 
@@ -69,16 +81,22 @@ func TestPop_NonEmpty(t *testing.T) {
 	}
 
 	gbs := GameBoardStack{
-		stack: []*board.GameBoard{&b1, &b2},
+		stack:  []*board.GameBoard{&b1, &b2},
+		maxLen: 2,
 	}
 
 	received, err := gbs.Pop()
 	if err != nil {
 		t.Error("Expected err to be nil Got", err)
 	}
-
 	if received != &b2 {
 		t.Error("Expected", b2, "Got", received)
+	}
+	if gbs.GetMaxLength() != 2 {
+		t.Error("Expected maxLen to be 2 Got", gbs.GetMaxLength())
+	}
+	if gbs.GetCurrentLength() != 1 {
+		t.Error("Expected current length to be 1 Got", gbs.GetCurrentLength())
 	}
 
 	expectedState := GameBoardStack{
@@ -99,13 +117,11 @@ func TestPop_NonEmpty(t *testing.T) {
 	if err != nil {
 		t.Error("Expected err to be nil Got", err)
 	}
-
 	if received != &b1 {
 		t.Error("Expected", b1, "Got", received)
 	}
-
-	if len(gbs.stack) != 0 {
-		t.Error("Expected stack length to be 0 Got", len(gbs.stack))
+	if gbs.GetCurrentLength() != 0 {
+		t.Error("Expected current length to be 0 Got", gbs.GetCurrentLength())
 	}
 }
 
