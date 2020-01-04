@@ -83,9 +83,10 @@ func TestGetNumOfLongestLinkedList_ConstantKeys(t *testing.T) {
 		stayConstant: true,
 	}
 
-	for _, b := range boards {
-		gbt.Insert(&b, &hashComputer)
-	}
+	gbt.Insert(&boards[0], &hashComputer)
+	gbt.Insert(&boards[1], &hashComputer)
+	gbt.Insert(&boards[2], &hashComputer)
+	gbt.Insert(&boards[3], &hashComputer)
 
 	x := gbt.GetNumOfLongestLinkedList()
 	if x != len(boards) {

@@ -13,11 +13,12 @@ type GameBoardStack struct {
 	maxLen int
 }
 
-// GetMaxLen returns the largest size the stack has gotten during the operation
+// GetMaxLength returns the largest size the stack has gotten during the operation
 func (gbs *GameBoardStack) GetMaxLength() int {
 	return gbs.maxLen
 }
 
+// GetCurrentLength returns the the current size of the stack
 func (gbs *GameBoardStack) GetCurrentLength() int {
 	return len(gbs.stack)
 }
