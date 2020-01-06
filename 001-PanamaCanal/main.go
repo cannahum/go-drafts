@@ -19,7 +19,7 @@ func (h *hashComputer) GetHashKey(b *board.GameBoard) int {
 				char = " "
 			}
 			intChar := int(char[0])
-			hValue = (((hValue*128 + intChar) % 100003) % 100003)
+			hValue = ((hValue*128 + intChar) % 100003) % 100003
 		}
 	}
 	return hValue
