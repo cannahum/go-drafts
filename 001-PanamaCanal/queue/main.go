@@ -3,7 +3,6 @@ package queue
 
 import (
 	"errors"
-
 	"github.com/cannahum/go-drafts/001-PanamaCanal/board"
 )
 
