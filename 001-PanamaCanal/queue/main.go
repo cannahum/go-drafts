@@ -57,7 +57,7 @@ func (gbq *GameBoardQueue) Enqueue(b *board.GameBoard) *GameBoardQueue {
 // Dequeue adds a new GameBoard pointer to the end of the queue
 func (gbq *GameBoardQueue) Dequeue() (*board.GameBoard, error) {
 	if len(gbq.queue) == 0 {
-		return nil, errors.New("The Queue is empty, nothing to dequeue")
+		return nil, errors.New("queue is empty, nothing to dequeue")
 	}
 	b := gbq.queue[0]
 	gbq.queue = gbq.queue[1:]

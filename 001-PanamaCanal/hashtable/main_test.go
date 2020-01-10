@@ -1,31 +1,30 @@
 package hashtable
 
 import (
-	"testing"
-
 	"github.com/cannahum/go-drafts/001-PanamaCanal/board"
+	"testing"
 )
 
 var boards = []board.GameBoard{
-	board.GameBoard{
+	{
 		Board: board.Board{
 			{"P", "A", "N", "A", "M", "A"},
 			{"C", "A", "N", "A", "L", ""},
 		},
 	},
-	board.GameBoard{
+	{
 		Board: board.Board{
 			{"P", "A", "N", "A", "M", ""},
 			{"C", "A", "N", "A", "L", "A"},
 		},
 	},
-	board.GameBoard{
+	{
 		Board: board.Board{
 			{"", "P", "A", "N", "A", "M"},
 			{"C", "A", "N", "A", "L", "A"},
 		},
 	},
-	board.GameBoard{
+	{
 		Board: board.Board{
 			{"C", "P", "A", "N", "A", "M"},
 			{"", "A", "N", "A", "L", "A"},
@@ -38,7 +37,7 @@ type mockHashComputer struct {
 	stayConstant bool
 }
 
-func (h *mockHashComputer) GetHashKey(b *board.GameBoard) int {
+func (h *mockHashComputer) GetHashKey(_ *board.GameBoard) int {
 	i := h.index
 	if !h.stayConstant {
 		h.index = h.index + 1

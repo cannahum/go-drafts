@@ -41,7 +41,7 @@ func (gbs *GameBoardStack) Pop() (*board.GameBoard, error) {
 	stack := gbs.stack
 	lastIndex := len(stack)
 	if lastIndex == 0 {
-		return nil, errors.New("Stack is empty, nothing to pop")
+		return nil, errors.New("stack is empty, nothing to pop")
 	}
 
 	poppedValue := stack[lastIndex-1]

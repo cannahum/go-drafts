@@ -28,8 +28,8 @@ func (h *hashComputer) GetHashKey(b *board.GameBoard) int {
 func main() {
 	fmt.Println("Welcome to the Panama Canal Puzzle")
 
-	queue := queue.GameBoardQueue{}
-	stack := stack.GameBoardStack{}
+	q := queue.GameBoardQueue{}
+	s := stack.GameBoardStack{}
 	hashTable := hashtable.NewGameBoardHashTable()
 	hasher := hashComputer{}
 
@@ -40,25 +40,25 @@ func main() {
 		},
 	}
 
-	queue.Enqueue(&firstBoard)
+	q.Enqueue(&firstBoard)
 
 	for {
-		currentBoard, err := queue.Dequeue()
+		currentBoard, err := q.Dequeue()
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		if !hashTable.Has(currentBoard, &hasher) {
 			if board.IsSolutionBoard(currentBoard) {
-				prepareStack(currentBoard, &stack)
-				doFinishSequence(&stack)
+				prepareStack(currentBoard, &s)
+				doFinishSequence(&s)
 				break
 			} else {
 				hashTable.Insert(currentBoard, &hasher)
 
 				variations := board.Variate(currentBoard)
 				for _, v := range variations {
-					queue.Enqueue(v)
+					q.Enqueue(v)
 				}
 			}
 		}
@@ -67,8 +67,8 @@ func main() {
 	// Print statistics
 	fmt.Println("Data Structures and Stats")
 	fmt.Printf("HashTable: # of Keys: %d, Key with largest Linked List has %d nodes\n", hashTable.GetNumOfKeys(), hashTable.GetNumOfLongestLinkedList())
-	fmt.Printf("Queue: Current size: %d, The maximum it ever got was: %d\n", queue.GetCurrentLength(), queue.GetMaxLength())
-	fmt.Printf("Stack: Current size: %d, The maximum it ever got was: %d\n", stack.GetCurrentLength(), stack.GetMaxLength())
+	fmt.Printf("Queue: Current size: %d, The maximum it ever got was: %d\n", q.GetCurrentLength(), q.GetMaxLength())
+	fmt.Printf("Stack: Current size: %d, The maximum it ever got was: %d\n", s.GetCurrentLength(), s.GetMaxLength())
 	fmt.Println("Goodbye!")
 }
 

@@ -274,7 +274,9 @@ func TestDequeue_Empty(t *testing.T) {
 
 	_, err := gbq.Dequeue()
 
-	if err.Error() != "The Queue is empty, nothing to dequeue" {
+	if err == nil {
 		t.Errorf("Expected error Got nil")
+	} else if err.Error() != "queue is empty, nothing to dequeue" {
+		t.Errorf("Expected error Got %s", err.Error())
 	}
 }

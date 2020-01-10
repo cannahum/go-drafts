@@ -109,7 +109,7 @@ func TestPop_NonEmpty(t *testing.T) {
 
 	for i, gameBoard := range gbs.stack {
 		if gameBoard.Board != gbs.stack[i].Board {
-			t.Errorf("Expected gbs.stack[%d].Board to be %v\nGot\n%v\n", i, expectedState.stack[i], gameBoard)
+			t.Errorf("expected gbs.stack[%d].Board to be %v\nGot\n%v\n", i, expectedState.stack[i], gameBoard)
 		}
 	}
 
@@ -130,7 +130,10 @@ func TestPop_Empty(t *testing.T) {
 
 	_, err := gbs.Pop()
 
-	if err.Error() != "Stack is empty, nothing to pop" {
+	if err == nil {
+		t.Errorf("expected error Got nil")
+	} else if err.Error() != "stack is empty, nothing to pop" {
 		t.Errorf("Expected error Got %s", err.Error())
 	}
+
 }

@@ -43,7 +43,7 @@ var SolutionBoard = Board{
 func (gb *GameBoard) String() string {
 	bb := *gb
 
-	s := ""
+	var s string
 	for i, line := range bb.Board {
 		for j, char := range line {
 			if j == 0 {
@@ -70,7 +70,7 @@ func (gb *GameBoard) String() string {
 // Variate that generates potential game boards by moving tiles legally
 // and returns the potentials as an array of GameBoard pointers
 func Variate(b *GameBoard) []*GameBoard {
-	result := []*GameBoard{}
+	var result []*GameBoard
 
 	li, ci, err := getEmptyTileCoordinates(b)
 	if err != nil {
@@ -133,7 +133,7 @@ func getEmptyTileCoordinates(b *GameBoard) (int, int, error) {
 		}
 	}
 
-	return -1, -1, errors.New("Could not find the empty tile coordinate for")
+	return -1, -1, errors.New("could not find the empty tile coordinate for")
 }
 
 // IsSolutionBoard checks if the board is the target Board
