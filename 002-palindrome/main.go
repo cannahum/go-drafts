@@ -11,6 +11,11 @@ func main() {
 	fmt.Println(isPalindrome("ana"))
 	fmt.Println(isPalindrome("anna"))
 	fmt.Println(isPalindrome("kannak"))
+
+	// Not
+	fmt.Println(isPalindrome("can"))
+	fmt.Println(isPalindrome("sdlkf"))
+	fmt.Println(isPalindrome("sdlkfllwlelle"))
 }
 
 func isPalindrome(x string) string {
@@ -25,16 +30,13 @@ func isPalindrome(x string) string {
 }
 
 func palindromeFinder(chars []byte) bool {
-	if len(chars) == 0 || len(chars) == 1 {
+	switch len(chars) {
+	case 0, 1:
 		return true
+	default:
+		if chars[0] != chars[len(chars)-1] {
+			return false
+		}
+		return palindromeFinder(chars[1 : len(chars)-1])
 	}
-
-	first := chars[0]
-	last := chars[len(chars)-1]
-	if first != last {
-		return false
-	}
-
-	rest := chars[1 : len(chars)-1]
-	return palindromeFinder(rest)
 }
