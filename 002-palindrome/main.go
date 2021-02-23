@@ -12,6 +12,13 @@ func main() {
 	fmt.Println(isPalindrome("anna"))
 	fmt.Println(isPalindrome("kannak"))
 
+	// Potential Palindrome
+	fmt.Println(isPalindrome("aa"))
+	fmt.Println(isPalindrome("aab"))
+	fmt.Println(isPalindrome("baa"))
+	fmt.Println(isPalindrome("bbaa"))
+	fmt.Println(isPalindrome("bbaacc"))
+
 	// Not
 	fmt.Println(isPalindrome("can"))
 	fmt.Println(isPalindrome("sdlkf"))
@@ -23,7 +30,11 @@ func isPalindrome(x string) string {
 
 	var result string
 	if !palindromeFinder(b) {
-		result = "not "
+		if !advancedPalindromeFinder(b) {
+			result = "not "
+		} else {
+			result = "potentially "
+		}
 	}
 
 	return fmt.Sprintf("The word '%s' is %sa palindrome", x, result)
@@ -39,4 +50,27 @@ func palindromeFinder(chars []byte) bool {
 		}
 		return palindromeFinder(chars[1 : len(chars)-1])
 	}
+}
+
+func advancedPalindromeFinder(chars []byte) bool {
+	charMap := make(map[byte]int)
+
+	for _, char := range chars {
+		currentCount, ok := charMap[char]
+		if !ok {
+			charMap[char] = 0
+			currentCount = 0
+		}
+
+		charMap[char] = currentCount + 1
+	}
+
+	numberOfOddFrequencies := 0
+	for _, frequency := range charMap {
+		if frequency%2 == 1 {
+			numberOfOddFrequencies++
+		}
+	}
+
+	return numberOfOddFrequencies < 2
 }
