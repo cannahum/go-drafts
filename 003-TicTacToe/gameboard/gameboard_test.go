@@ -148,13 +148,94 @@ func TestGameEndingWithRows(t *testing.T) {
 	board1.RegisterMove(move.X, getCoordinates(0, 0))
 	board1.RegisterMove(move.O, getCoordinates(1, 1))
 	board1.RegisterMove(move.X, getCoordinates(0, 1))
-	board1.RegisterMove(move.X, getCoordinates(2, 0))
+	board1.RegisterMove(move.O, getCoordinates(2, 0))
 	gameFinished, _ := board1.RegisterMove(move.X, getCoordinates(0, 2))
 
 	if gameFinished != true {
 		t.Error("Expected game end but got false")
 	}
 
+	board2 := NewGameBoard()
+	board2.RegisterMove(move.X, getCoordinates(0, 0))
+	board2.RegisterMove(move.O, getCoordinates(1, 1))
+	board2.RegisterMove(move.X, getCoordinates(2, 2))
+	board2.RegisterMove(move.O, getCoordinates(1, 0))
+	board2.RegisterMove(move.X, getCoordinates(0, 2))
+	gameFinished, _ = board2.RegisterMove(move.O, getCoordinates(1, 2))
+
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+
+	board3 := NewGameBoard()
+	board3.RegisterMove(move.X, getCoordinates(2, 0))
+	board3.RegisterMove(move.O, getCoordinates(1, 1))
+	board3.RegisterMove(move.X, getCoordinates(2, 1))
+	board3.RegisterMove(move.O, getCoordinates(0, 2))
+	gameFinished, _ = board3.RegisterMove(move.X, getCoordinates(2, 2))
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+}
+
+func TestGameEndingWithCols(t *testing.T) {
+	board1 := NewGameBoard()
+	board1.RegisterMove(move.X, getCoordinates(0, 0))
+	board1.RegisterMove(move.O, getCoordinates(1, 1))
+	board1.RegisterMove(move.X, getCoordinates(1, 0))
+	board1.RegisterMove(move.O, getCoordinates(1, 2))
+	gameFinished, _ := board1.RegisterMove(move.X, getCoordinates(2, 0))
+
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+
+	board2 := NewGameBoard()
+	board2.RegisterMove(move.X, getCoordinates(0, 0))
+	board2.RegisterMove(move.O, getCoordinates(1, 1))
+	board2.RegisterMove(move.X, getCoordinates(2, 2))
+	board2.RegisterMove(move.O, getCoordinates(0, 1))
+	board2.RegisterMove(move.X, getCoordinates(0, 2))
+	gameFinished, _ = board2.RegisterMove(move.O, getCoordinates(2, 1))
+
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+
+	board3 := NewGameBoard()
+	board3.RegisterMove(move.X, getCoordinates(0, 2))
+	board3.RegisterMove(move.O, getCoordinates(1, 1))
+	board3.RegisterMove(move.X, getCoordinates(1, 2))
+	board3.RegisterMove(move.O, getCoordinates(0, 1))
+	gameFinished, _ = board3.RegisterMove(move.X, getCoordinates(2, 2))
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+}
+
+func TestGameEndingWithDiagonals(t *testing.T) {
+	board1 := NewGameBoard()
+	board1.RegisterMove(move.X, getCoordinates(0, 0))
+	board1.RegisterMove(move.O, getCoordinates(0, 2))
+	board1.RegisterMove(move.X, getCoordinates(1, 1))
+	board1.RegisterMove(move.O, getCoordinates(1, 2))
+	gameFinished, _ := board1.RegisterMove(move.X, getCoordinates(2, 2))
+
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+
+	board2 := NewGameBoard()
+	board2.RegisterMove(move.X, getCoordinates(0, 0))
+	board2.RegisterMove(move.O, getCoordinates(0, 2))
+	board2.RegisterMove(move.X, getCoordinates(2, 2))
+	board2.RegisterMove(move.O, getCoordinates(1, 1))
+	board2.RegisterMove(move.X, getCoordinates(0, 1))
+	gameFinished, _ = board2.RegisterMove(move.O, getCoordinates(2, 0))
+
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
 }
 
 func getCoordinates(row, col int) move.Coordinates {
