@@ -142,3 +142,24 @@ func TestNewGameBoardInvalidMoveByWrongCoordinates(t *testing.T) {
 		t.Error("Expected error but didn't get one")
 	}
 }
+
+func TestGameEndingWithRows(t *testing.T) {
+	board1 := NewGameBoard()
+	board1.RegisterMove(move.X, getCoordinates(0, 0))
+	board1.RegisterMove(move.O, getCoordinates(1, 1))
+	board1.RegisterMove(move.X, getCoordinates(0, 1))
+	board1.RegisterMove(move.X, getCoordinates(2, 0))
+	gameFinished, _ := board1.RegisterMove(move.X, getCoordinates(0, 2))
+
+	if gameFinished != true {
+		t.Error("Expected game end but got false")
+	}
+
+}
+
+func getCoordinates(row, col int) move.Coordinates {
+	return move.Coordinates{
+		Row: row,
+		Col: col,
+	}
+}
