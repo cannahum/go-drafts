@@ -14,4 +14,10 @@ func main() {
 	// playerO := player.NewPlayer(move.O)
 
 	fmt.Println(gameBoard.GetCurrentBoardState())
+	// players := []player.Player{playerX, playerO}
+	// playerIndex := 0
+	// for {
+	// p := players[playerIndex]
+	// gameBoard.RegisterMove(p.)
+	// }
 }

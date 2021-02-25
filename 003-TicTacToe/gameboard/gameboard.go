@@ -150,8 +150,7 @@ func (gb *gameBoard) isGameOver() bool {
 		boardRep.hasDiagonalTicTacToe()
 }
 
-func (gb *gameBoard) RegisterMove(moveType move.TicTacToeMoveType, coor move.Coordinates) (bool, error) {
-	newMove := MoveInGame{moveType, coor}
+func (gb *gameBoard) RegisterMove(newMove MoveInGame) (bool, error) {
 	err := gb.moveRegister.registerMove(newMove)
 	if err != nil {
 		return false, err
