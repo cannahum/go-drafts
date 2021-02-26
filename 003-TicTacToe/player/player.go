@@ -9,8 +9,14 @@ type player struct {
 	moveType move.TicTacToeMoveType
 }
 
-func (p *player) makeAMove(c move.Coordinates) (*gameboard.MoveInGame, error) {
-	return &gameboard.MoveInGame{p.moveType, c}, nil
+func (p *player) MakeAMove(row, col int) *gameboard.MoveInGame {
+	return &gameboard.MoveInGame{
+		MoveType: p.moveType,
+		Coordinates: move.Coordinates{
+			Row: row,
+			Col: col,
+		},
+	}
 }
 
 // NewPlayer is a factory method that returns a pointer to a new instance of player which implements Player interface
