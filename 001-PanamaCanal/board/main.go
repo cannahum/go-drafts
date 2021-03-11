@@ -51,7 +51,7 @@ func (gb *GameBoard) String() string {
 			}
 
 			if char == "" {
-				s += "[]"
+				s += "_"
 			} else {
 				s += char
 			}
